@@ -11,8 +11,8 @@ namespace MarsQA_GB.SpecflowPages.Pages
             try 
             {
                 //Check if user has logged in successfully
-                IWebElement hiGuirllyLink = webDriver.FindElement(By.XPath("//span[@class='item ui dropdown link']"));
-                Assert.That(hiGuirllyLink.Text == "Hi Guirlly", "User hasn't been logged in.");
+                IWebElement hiExaLink = webDriver.FindElement(By.XPath("//span[@class='item ui dropdown link']"));
+                Assert.That(hiExaLink.Text == "Hi Exa", "User hasn't been logged in.");
             }
             catch (Exception ex) 
             {
