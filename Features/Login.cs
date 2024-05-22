@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
-namespace MarsQA_GB.Feature
+namespace MarsQA_GB.Features
 {
     [Binding]
     class Login

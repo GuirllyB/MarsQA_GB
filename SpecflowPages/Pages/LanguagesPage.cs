@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 
 namespace MarsQA_GB.SpecflowPages.Pages
 {
-    public class LanguageProfile : CommonDriver
+    public class LanguagesPage : CommonDriver
     {
         public void CreateLanguageRecord(IWebDriver webDriver, string language, string level) 
         {
@@ -36,8 +36,8 @@ namespace MarsQA_GB.SpecflowPages.Pages
             conversationalLevel.Click();
             IWebElement fluentLevel = webDriver.FindElement(By.XPath("//option[@value='Fluent']"));
             fluentLevel.Click();
-            IWebElement nativeBilingualLevel = webDriver.FindElement(By.XPath("//option[@value='Native/Bilingual']"));
-            nativeBilingualLevel.Click();
+            //IWebElement nativeBilingualLevel = webDriver.FindElement(By.XPath("//option[@value='Native/Bilingual']"));
+            //nativeBilingualLevel.Click();
 
             //Click Add button
             WaitUtils.WaitToBeClickable(webDriver, "XPath", "//input[@value='Add']", 3);
@@ -46,7 +46,20 @@ namespace MarsQA_GB.SpecflowPages.Pages
 
             Thread.Sleep(2000);
          
+            
+
+        }
+
+        public void VerifyLanguageRecordCreated(IWebDriver webDriver, string language, string level) 
+        {
+            Thread.Sleep(2000);
             //User sees this message on upper right upon adding: "'{Language}' has been added to your languages"
+            //Check if new language record has bene created successfully
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]", 3);
+            IWebElement latestAddedLanguage = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
+
+            Assert.That(latestAddedLanguage.Text == language, "Language record hasn't been edited.");
+            Thread.Sleep(2000);
 
         }
 

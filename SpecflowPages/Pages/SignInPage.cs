@@ -3,7 +3,7 @@ using OpenQA.Selenium;
 
 namespace MarsQA_GB.SpecflowPages.Pages
 {
-    public class SignIn : CommonDriver
+    public class SignInPage : CommonDriver
     {
         //private readonly By signInButtonLocator = By.XPath("//a[normalize-space()='Sign In']");
         //IWebElement signInButton;
