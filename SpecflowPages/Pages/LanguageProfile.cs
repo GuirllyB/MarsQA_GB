@@ -1,4 +1,5 @@
 ﻿using MarsQA_GB.SpecflowPages.Utils;
+using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -185,13 +186,46 @@ namespace MarsQA_GB.SpecflowPages.Pages
             IWebElement fourthCancelLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/span[1]/input[2]"));
             fourthCancelLanguageButton.Click();
 
+            Thread.Sleep(2000);
+        }
 
-
+        public void VerifyNewlyEditedLanguageRecord(IWebDriver webDriver, string language) 
+        {
+            Thread.Sleep(2000);
             //User sees this message on upper right upon adding: ""'{Language}' has been added to your languages"" in blue"
+            //Check if latest language record has been edited successfully
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]", 3);
+            IWebElement latestEditedLanguage = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
 
+            Assert.That(latestEditedLanguage.Text == language, "Language record hasn't been edited.");
+            Thread.Sleep(2000);
+        }
+
+
+        public void DeleteNewlyAddedLanguage(IWebDriver webDriver, string language) 
+        {
+            Thread.Sleep(2000);
+
+            //Delete latest added language
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "(//i)[21]", 3);
+            IWebElement lastDeleteLanguageButton = webDriver.FindElement(By.XPath("(//i)[21]"));
+            lastDeleteLanguageButton.Click();
+
+            Thread.Sleep(2000);
 
         }
 
+        public void VerifyDeletedLanguageRecord(IWebDriver webDriver, string language) 
+        {
+            Thread.Sleep(2000);
+            //User sees this message on upper right upon adding: "'{Language}' has been deleted from your languages" in blue
+            //Check if new language record has been deleted successfully
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]", 3);
+            IWebElement deletedLanguage = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]"));
+
+            Assert.That(deletedLanguage.Text == language, "Language record hasn't been deleted.");
+
+        }
 
     }
 }
