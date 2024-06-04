@@ -1,8 +1,9 @@
 using MarsQA_GB.SpecflowPages.Pages;
-using MarsQA_GB.SpecflowPages.Utils;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
+using MarsQA_GB.SpecflowPages.Utils;
 
 namespace MarsQA_GB.StepDefinitions
 {
@@ -45,7 +46,7 @@ namespace MarsQA_GB.StepDefinitions
         [When(@"user creates a new language record '([^']*)' '([^']*)'")]
         public void WhenUserCreatesANewLanguageRecord(string language, string level)
         {
-            languagesPageObj.CreateLanguageRecord(webDriver, "French", "Basic");
+            languagesPageObj.CreateLanguageRecord(webDriver, language, level);
         }
 
         [Then(@"verify language record is created")]

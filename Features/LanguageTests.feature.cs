@@ -75,14 +75,18 @@ namespace MarsQA_GB.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Verify user is able to create a language record")]
-        [NUnit.Framework.CategoryAttribute("tag1")]
-        public virtual void VerifyUserIsAbleToCreateALanguageRecord()
+        [NUnit.Framework.TestCaseAttribute("\'Mandarin\'", "\'Basic\'", null)]
+        [NUnit.Framework.TestCaseAttribute("\'.....@123\'", "\'Conversational\'", null)]
+        [NUnit.Framework.TestCaseAttribute("\'French\'", "\'Fluent\'", null)]
+        [NUnit.Framework.TestCaseAttribute("\'English\'", "\'Native/Bilingual\'", null)]
+        public virtual void VerifyUserIsAbleToCreateALanguageRecord(string language, string level, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
-                    "tag1"};
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Language", language);
+            argumentsOfScenario.Add("Level", level);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify user is able to create a language record", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 6
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -102,17 +106,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.Given("user logs into Mars portal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 14
+testRunner.Given("user logs into Mars portal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 8
- testRunner.And("user navigates to Languages page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+testRunner.And("user navigates to Languages page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 9
- testRunner.When("user creates a new language record \'French\' \'Basic\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 16
+testRunner.When(string.Format("user creates a new language record {0} {1}", language, level), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 10
- testRunner.Then("verify language record is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 17
+testRunner.Then("verify language record is created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

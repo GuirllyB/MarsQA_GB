@@ -26,18 +26,30 @@ namespace MarsQA_GB.SpecflowPages.Pages
             languageTextbox.SendKeys(language);
 
             //Choose language level from Choose Language Level dropdown list
+            //IWebElement languageLevelDropdown = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/div/div[2]/select"));
+            //languageLevelDropdown.Click();
+
+            Thread.Sleep(2000);
+
+            WaitUtils.WaitToBeClickable(webDriver, "Xpath", "//select[@name='level']", 3);
             IWebElement languageLevelDropdown = webDriver.FindElement(By.XPath("//select[@name='level']"));
             languageLevelDropdown.Click();
-            IWebElement chooseLanguageLevel = webDriver.FindElement(By.XPath("//option[normalize-space()='Choose Language Level']"));
-            chooseLanguageLevel.Click();
-            IWebElement basicLevel = webDriver.FindElement(By.XPath("//option[@value='Basic']"));
-            basicLevel.Click();
-            IWebElement conversationalLevel = webDriver.FindElement(By.XPath("//option[@value='Conversational']"));
-            conversationalLevel.Click();
-            IWebElement fluentLevel = webDriver.FindElement(By.XPath("//option[@value='Fluent']"));
-            fluentLevel.Click();
-            //IWebElement nativeBilingualLevel = webDriver.FindElement(By.XPath("//option[@value='Native/Bilingual']"));
-            //nativeBilingualLevel.Click();
+
+            //dropdown menus
+            int languageLevelValue = webDriver.FindElements(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/div/div[2]/select/option")).Count();
+               for (int i = 1; i <= languageLevelValue; i++) 
+                {
+                    IWebElement levelValue = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/div/div[2]/select/option[" + i + "]"));
+                if (levelValue.Text == level) 
+                {
+                    Console.WriteLine("Record was found");
+                    webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/div/div[2]/select/option[" + i + "]")).Click();
+                    break;
+                }
+                
+
+                }
+            
 
             //Click Add button
             WaitUtils.WaitToBeClickable(webDriver, "XPath", "//input[@value='Add']", 3);
