@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
-namespace MarsQA_GB.Features
-{
-    [Binding]
-    class Login
-    {
-        [Given(@"I login to the website")]
-        public void GivenILoginToTheWebsite()
-        {
-            ScenarioContext.Current.Pending();
-        }
+//namespace MarsQA_GB.Features
+//{
+//    [Binding]
+//    class Login
+//    {
+//        [Given(@"I login to the website")]
+//        public void GivenILoginToTheWebsite()
+//        {
+//            ScenarioContext.Current.Pending();
+//        }
 
-    }
-}
+//    }
+//}

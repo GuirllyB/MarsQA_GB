@@ -3,13 +3,15 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using System;
 using System.Reflection.Emit;
+using static System.Collections.Specialized.BitVector32;
 
 namespace MarsQA_GB.SpecflowPages.Pages
 {
     public class LanguagesPage : CommonDriver
     {
-        public void CreateLanguageRecord(IWebDriver webDriver, string language, string level) 
+        public void CreateLanguageRecord(IWebDriver webDriver, string language, string languageLevel) 
         {
             //Create a new Language record
             Thread.Sleep(2000);
@@ -40,12 +42,12 @@ namespace MarsQA_GB.SpecflowPages.Pages
                for (int i = 1; i <= languageLevelValue; i++) 
                 {
                     IWebElement levelValue = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/div/div[2]/select/option[" + i + "]"));
-                if (levelValue.Text == level) 
-                {
-                    Console.WriteLine("Record was found");
-                    webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/div/div[2]/select/option[" + i + "]")).Click();
-                    break;
-                }
+                    if (levelValue.Text == languageLevel) 
+                    {
+                        Console.WriteLine("Record was found");
+                        webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/div/div[2]/select/option[" + i + "]")).Click();
+                        break;
+                    }
                 
 
                 }
@@ -62,185 +64,103 @@ namespace MarsQA_GB.SpecflowPages.Pages
 
         }
 
-        public void VerifyLanguageRecordCreated(IWebDriver webDriver, string language, string level) 
+        public void VerifyLanguageRecordCreated(IWebDriver webDriver, string index, string language) 
         {
             Thread.Sleep(2000);
             //User sees this message on upper right upon adding: "'{Language}' has been added to your languages"
             //Check if new language record has bene created successfully
-            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]", 3);
-            IWebElement latestAddedLanguage = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody["+ index + "]/tr/td[1]", 3);
+            IWebElement latestAddedLanguage = webDriver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[" + index + "]/tr/td[1]"));
 
-            Assert.That(latestAddedLanguage.Text == language, "Language record hasn't been edited.");
+            Assert.That(latestAddedLanguage.Text == language, "Language record hasn't been created.");
             Thread.Sleep(2000);
 
         }
 
-        public void EditNewlyAddedLanguageRecord(IWebDriver webDriver, string language, string level)
+        public void EditNewlyAddedLanguageRecord(IWebDriver webDriver, string index, string newLanguage, string newLanguageLevel)
         {
 
             Thread.Sleep(2000);
 
-            //Click 1st pencil icon to edit language 1
-            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//td[@class='right aligned'])[1]", 3);
-            IWebElement editFirstPencilButton = webDriver.FindElement(By.XPath("(//span)[12]"));
-            editFirstPencilButton.Click();
+            int editButtonIndex = Int32.Parse(index)*2+10;
 
-            //Edit the 1st language in the Add Language text box
-            IWebElement editFirstLanguageTextbox = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
-            editFirstLanguageTextbox.SendKeys(language);
+            //Click pencil icon to edit language
+            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//span)[" + editButtonIndex + "]", 3);
+            IWebElement editPencilButton = webDriver.FindElement(By.XPath("(//span)[" + editButtonIndex + "]"));
+            editPencilButton.Click();
 
-            //Edit 1st language level from Choose Language Level dropdown list
-            IWebElement editFirstLanguageLevelDropdown = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/div[2]/select[1]"));
-            editFirstLanguageLevelDropdown.Click();
-            IWebElement editFirstChooseLanguageLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[1]"));
-            editFirstChooseLanguageLevel.Click();
-            IWebElement editFirstBasicLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[2]"));
-            editFirstBasicLevel.Click();
-            IWebElement editFirstConversationalLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[3]"));
-            editFirstConversationalLevel.Click();
-            IWebElement editFirstFluentLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[4]"));
-            editFirstFluentLevel.Click();
-            IWebElement editFirstNativeBilingualLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[5]"));
-            editFirstNativeBilingualLevel.Click();
+            //Edit the language in the Add Language text box
+            IWebElement editLanguageTextbox = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
+            editLanguageTextbox.Clear();
+            editLanguageTextbox.SendKeys(newLanguage);
 
-            //Click 1st Update button
-            IWebElement firstUpdateLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
-            firstUpdateLanguageButton.Click();
+            //Edit language level from Choose Language Level dropdown list
+            IWebElement editLanguageLevelDropdown = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/div[2]/select[1]"));
+            editLanguageLevelDropdown.Click();
 
-            //Click 1st Cancel button
-            IWebElement firstCancelButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/span[1]/input[2]"));
-            firstCancelButton.Click();
+            //Choose new language level from the dropdown list
+            int newLanguageLevelValue = webDriver.FindElements(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/div[2]/select[1]/option")).Count();
+            for (int i = 1; i <= newLanguageLevelValue; i++)
+            {
+                IWebElement newLevelValue = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[" + i + "]"));
+                if (newLevelValue.Text == newLanguageLevel)
+                {
+                    Console.WriteLine("Record was found");
+                    webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[" + i + "]")).Click();
+                    break;
+                }
+
+
+            }
+
+            
+            //Click  Update button
+            //WaitUtils.WaitToBeClickable(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]", 3);
+            //IWebElement updateLanguageButton = webDriver.FindElement(By.XPath("(/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
+            //updateLanguageButton.Click();
+
+            //Click  Update button
+            WaitUtils.WaitToBeClickable(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody["+ index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]", 3);
+            IWebElement updateLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
+            updateLanguageButton.Click();
+
+            ////Click Cancel button
+            //IWebElement cancelUpdateButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[2]"));
+            //cancelUpdateButton.Click();
 
             //User sees this message on upper right upon adding: ""'{Language}' has been added to your languages"" in blue"
 
-
-
-            //Clicks 2nd pencil icon to edit language 2
-            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//td[@class='right aligned'])[2]", 3);
-            IWebElement editSecondPencilButton = webDriver.FindElement(By.XPath("(//span)[14]"));
-            editSecondPencilButton.Click();
-
-            //Edit the 2nd language in the Add Language text box
-            IWebElement editSecondLanguageTextbox = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
-            editSecondLanguageTextbox.SendKeys(language);
-
-            //Edit 2nd language level from Choose Language Level dropdown list
-            IWebElement editSecondLanguageLevelDropdown = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/div[2]/select[1]"));
-            editSecondLanguageLevelDropdown.Click();
-            IWebElement editSecondChooseLanguageLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[1]"));
-            editSecondChooseLanguageLevel.Click();
-            IWebElement editSecondBasicLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[2]"));
-            editSecondBasicLevel.Click();
-            IWebElement editSecondConversationalLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[3]"));
-            editSecondConversationalLevel.Click();
-            IWebElement editSecondFluentLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[4]"));
-            editSecondFluentLevel.Click();
-            IWebElement editSecondNativeBilingualLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[5]"));
-            editSecondNativeBilingualLevel.Click();
-
-            //Click 2nd Update button
-            IWebElement secondUpdateLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
-            secondUpdateLanguageButton.Click();
-
-            //Click 2nd Cancel button
-            IWebElement secondCancelLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[2]/tr[1]/td[1]/div[1]/span[1]/input[2]"));
-            secondCancelLanguageButton.Click();
-
-
-
-            //Clicks 3rd pencil icon to edit language 3
-            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//td[@class='right aligned'])[3]", 3);
-            IWebElement editThirdPencilButton = webDriver.FindElement(By.XPath("(//span)[16]"));
-            editThirdPencilButton.Click();
-
-            //Edit the 3rd language in the Add Language text box
-            IWebElement editThirdLanguageTextbox = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
-            editThirdLanguageTextbox.SendKeys(language);
-
-            //Edit 3rd language level from Choose Language Level dropdown list
-            IWebElement editThirdLanguageLevelDropdown = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/div[2]/select[1]"));
-            editThirdLanguageLevelDropdown.Click();
-            IWebElement editThirdChooseLanguageLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[1]"));
-            editThirdChooseLanguageLevel.Click();
-            IWebElement editThirdBasicLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[2]"));
-            editThirdBasicLevel.Click();
-            IWebElement editThirdConversationalLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[3]"));
-            editThirdConversationalLevel.Click();
-            IWebElement editThirdFluentLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[4]"));
-            editThirdFluentLevel.Click();
-            IWebElement editThirdNativeBilingualLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[5]"));
-            editThirdNativeBilingualLevel.Click();
-
-            //Click 3rd Update button
-            IWebElement thirdUpdateLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
-            thirdUpdateLanguageButton.Click();
-
-            //Click 3rd Cancel button
-            IWebElement thirdCancelLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[3]/tr[1]/td[1]/div[1]/span[1]/input[2]"));
-            thirdCancelLanguageButton.Click();
-
-
-            //Clicks 4th pencil icon to edit language 4
-            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//td[@class='right aligned'])[4]", 3);
-            IWebElement editFourthPencilButton = webDriver.FindElement(By.XPath("(//span)[18]"));
-            editFourthPencilButton.Click();
-
-            //Edit the 4th language in the Add Language text box
-            IWebElement editFourthLanguageTextbox = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
-            editFourthLanguageTextbox.SendKeys(language);
-
-            //Edit 4th language level from Choose Language Level dropdown list
-            IWebElement editFourthLanguageLevelDropdown = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[2]/select[1]"));
-            editFourthLanguageLevelDropdown.Click();
-            IWebElement editFourthChooseLanguageLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[1]"));
-            editFourthChooseLanguageLevel.Click();
-            IWebElement editFourthBasicLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[2]"));
-            editFourthBasicLevel.Click();
-            IWebElement editFourthConversationalLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[3]"));
-            editFourthConversationalLevel.Click();
-            IWebElement editFourthFluentLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[4]"));
-            editFourthFluentLevel.Click();
-            IWebElement editFourthNativeBilingualLevel = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[2]/select[1]/option[5]"));
-            editFourthNativeBilingualLevel.Click();
-
-            //Click 4th Update button
-            IWebElement fourthUpdateLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
-            fourthUpdateLanguageButton.Click();
-
-            //Click 4th Cancel button
-            IWebElement fourthCancelLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/span[1]/input[2]"));
-            fourthCancelLanguageButton.Click();
-
             Thread.Sleep(2000);
+                       
         }
 
-        public void VerifyNewlyEditedLanguageRecord(IWebDriver webDriver, string language) 
+        public void VerifyNewlyEditedLanguageRecord(IWebDriver webDriver, string index, string newLanguage) 
         {
             Thread.Sleep(2000);
             //User sees this message on upper right upon adding: ""'{Language}' has been added to your languages"" in blue"
             //Check if latest language record has been edited successfully
-            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]", 3);
-            IWebElement latestEditedLanguage = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]/td[1]/div[1]/div[1]/input[1]"));
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[" + index + "]/tr/td[1]", 3);
+            IWebElement latestEditedLanguage = webDriver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[" + index + "]/tr/td[1]"));
 
-            Assert.That(latestEditedLanguage.Text == language, "Language record hasn't been edited.");
+            Assert.That(latestEditedLanguage.Text == newLanguage, "Language record hasn't been edited.");
             Thread.Sleep(2000);
         }
 
 
-        public void DeleteNewlyAddedLanguage(IWebDriver webDriver, string language) 
+        public void DeleteNewlyAddedLanguage(IWebDriver webDriver) 
         {
             Thread.Sleep(2000);
 
-            //Delete latest added language
-            WaitUtils.WaitToBeVisible(webDriver, "XPath", "(//i)[21]", 3);
-            IWebElement lastDeleteLanguageButton = webDriver.FindElement(By.XPath("(//i)[21]"));
-            lastDeleteLanguageButton.Click();
+            //Delete latest added language options 15, 17, 19, & 21
+            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//i)[21]", 3);
+            IWebElement deleteLanguageButton = webDriver.FindElement(By.XPath("(//i)[21]"));
+            deleteLanguageButton.Click();
 
             Thread.Sleep(2000);
 
         }
 
-        public void VerifyDeletedLanguageRecord(IWebDriver webDriver, string language) 
+        public void VerifyDeletedLanguageRecord(IWebDriver webDriver, string newlanguage) 
         {
             Thread.Sleep(2000);
             //User sees this message on upper right upon adding: "'{Language}' has been deleted from your languages" in blue
@@ -248,8 +168,8 @@ namespace MarsQA_GB.SpecflowPages.Pages
             WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]", 3);
             IWebElement deletedLanguage = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]"));
 
-            Assert.That(deletedLanguage.Text == language, "Language record hasn't been deleted.");
-
+            Assert.That(deletedLanguage.Text == newlanguage, "Language record hasn't been deleted.");
+            Thread.Sleep(2000);
         }
 
     }

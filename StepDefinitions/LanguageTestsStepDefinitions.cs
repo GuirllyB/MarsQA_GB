@@ -44,15 +44,46 @@ namespace MarsQA_GB.StepDefinitions
         }
 
         [When(@"user creates a new language record '([^']*)' '([^']*)'")]
-        public void WhenUserCreatesANewLanguageRecord(string language, string level)
+        public void WhenUserCreatesANewLanguageRecord(string language, string languageLevel)
         {
-            languagesPageObj.CreateLanguageRecord(webDriver, language, level);
+            languagesPageObj.CreateLanguageRecord(webDriver, language, languageLevel);
         }
 
-        [Then(@"verify language record is created")]
-        public void ThenVerifyLanguageRecordIsCreated(string language, string level)
+        [Then(@"verify language record is created '([^']*)' '([^']*)'")]
+        public void ThenVerifyLanguageRecordIsCreated(string index, string language)
         {
-            languagesPageObj.VerifyLanguageRecordCreated(webDriver, language, level);
+            languagesPageObj.VerifyLanguageRecordCreated(webDriver, index, language);
         }
+
+        [When(@"user edits an existing language record '([^']*)' '([^']*)' '([^']*)'")]
+        public void WhenUserEditsAnExistingLanguageRecord(string index, string newLanguage, string newLanguageLevel)
+        {
+            languagesPageObj.EditNewlyAddedLanguageRecord(webDriver, index, newLanguage, newLanguageLevel);
+        }
+
+        [Then(@"verify language record is updated '([^']*)' '([^']*)'")]
+        public void ThenVerifyLanguageRecordIsUpdated(string index, string newLanguage)
+        {
+            languagesPageObj.VerifyNewlyEditedLanguageRecord(webDriver, index, newLanguage);
+        }
+
+        [When(@"user deletes an existing language record")]
+        public void WhenUserDeletesAnExistingLanguageRecord()
+        {
+            languagesPageObj.DeleteNewlyAddedLanguage(webDriver);
+        }
+
+        [Then(@"verify language record is deleted '([^']*)'")]
+        public void ThenVerifyLanguageRecordIsDeleted(string newLanguage)
+        {
+            languagesPageObj.VerifyDeletedLanguageRecord(webDriver, newLanguage);
+        }
+
+
+        //[TearDown]
+        //public void CloseTestRun()
+        //{
+        //    webDriver.Quit();
+        //}
     }
 }
