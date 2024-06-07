@@ -209,7 +209,7 @@ testRunner.Given("user logs into Mars portal", ((string)(null)), ((TechTalk.Spec
 testRunner.And("user navigates to Languages page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 35
-testRunner.When("user deletes an existing language record", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When(string.Format("user deletes an existing language record {0}", newLanguage), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 36
 testRunner.Then(string.Format("verify language record is deleted {0}", newLanguage), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

@@ -114,11 +114,7 @@ namespace MarsQA_GB.SpecflowPages.Pages
             }
 
             
-            //Click  Update button
-            //WaitUtils.WaitToBeClickable(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]", 3);
-            //IWebElement updateLanguageButton = webDriver.FindElement(By.XPath("(/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
-            //updateLanguageButton.Click();
-
+          
             //Click  Update button
             WaitUtils.WaitToBeClickable(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody["+ index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]", 3);
             IWebElement updateLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[1]"));
@@ -147,14 +143,27 @@ namespace MarsQA_GB.SpecflowPages.Pages
         }
 
 
-        public void DeleteNewlyAddedLanguage(IWebDriver webDriver) 
+        public void DeleteNewlyAddedLanguage(IWebDriver webDriver, string newLanguage) 
         {
             Thread.Sleep(2000);
 
+            IWebElement recordToBeDeleted = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[4]/tr/td[1]"));
+
             //Delete latest added language options 15, 17, 19, & 21
-            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//i)[21]", 3);
-            IWebElement deleteLanguageButton = webDriver.FindElement(By.XPath("(//i)[21]"));
-            deleteLanguageButton.Click();
+            if (recordToBeDeleted.Text == newLanguage)
+            {
+                WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//i)[21]", 3);
+                IWebElement deleteLanguageButton = webDriver.FindElement(By.XPath("(//i)[21]"));
+                deleteLanguageButton.Click();
+            }
+            else 
+            {
+                Assert.Fail("Record to be deleted has not been found.");
+            }
+
+            Thread.Sleep(2000);
+
+            webDriver.Navigate().Refresh();
 
             Thread.Sleep(2000);
 
@@ -164,11 +173,11 @@ namespace MarsQA_GB.SpecflowPages.Pages
         {
             Thread.Sleep(2000);
             //User sees this message on upper right upon adding: "'{Language}' has been deleted from your languages" in blue
-            //Check if new language record has been deleted successfully
-            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]", 3);
-            IWebElement deletedLanguage = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]/tr[1]"));
+            //Check if new language record has been deleted succe/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]sfully
+            //WaitUtils.WaitToBeVisible(webDriver, "XPath", "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[4]/tr/td[1]", 3);
+            //IWebElement deletedLanguage = webDriver.FindElements(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[4]/tr/td[1]"));
 
-            Assert.That(deletedLanguage.Text == newlanguage, "Language record hasn't been deleted.");
+            Assert.That(!webDriver.FindElements(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[4]/tr/td[1]")).Any(), "Language record hasn't been deleted.");
             Thread.Sleep(2000);
         }
 

@@ -32,7 +32,7 @@ Examples:
 Scenario Outline: C. Delete an existing language record
 Given user logs into Mars portal
 And user navigates to Languages page
-When user deletes an existing language record
+When user deletes an existing language record <newLanguage>
 Then verify language record is deleted <newLanguage>
 
 Examples: 
