@@ -175,12 +175,16 @@ testRunner.Then(string.Format("verify language record is updated {0} {1}", index
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("C. Delete an existing language record")]
-        [NUnit.Framework.TestCaseAttribute("\'$same\'", null)]
-        public virtual void C_DeleteAnExistingLanguageRecord(string newLanguage, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("1", "\'19\'", null)]
+        [NUnit.Framework.TestCaseAttribute("2", "\'17\'", null)]
+        [NUnit.Framework.TestCaseAttribute("3", "\'15\'", null)]
+        [NUnit.Framework.TestCaseAttribute("4", "\'13\'", null)]
+        public virtual void C_DeleteAnExistingLanguageRecord(string sequence, string index, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("newLanguage", newLanguage);
+            argumentsOfScenario.Add("sequence", sequence);
+            argumentsOfScenario.Add("index", index);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("C. Delete an existing language record", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 32
 this.ScenarioInitialize(scenarioInfo);
@@ -209,10 +213,10 @@ testRunner.Given("user logs into Mars portal", ((string)(null)), ((TechTalk.Spec
 testRunner.And("user navigates to Languages page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 35
-testRunner.When(string.Format("user deletes an existing language record {0}", newLanguage), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+testRunner.When(string.Format("user deletes an existing language record {0}", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 36
-testRunner.Then(string.Format("verify language record is deleted {0}", newLanguage), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then(string.Format("verify language record is deleted {0}", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

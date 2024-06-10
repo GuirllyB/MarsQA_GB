@@ -32,9 +32,12 @@ Examples:
 Scenario Outline: C. Delete an existing language record
 Given user logs into Mars portal
 And user navigates to Languages page
-When user deletes an existing language record <newLanguage>
-Then verify language record is deleted <newLanguage>
+When user deletes an existing language record <index>
+Then verify language record is deleted <index>
 
 Examples: 
-| newLanguage |
-| '$same'     |
+| sequence | index |
+| 1 | '19'  |
+| 2 | '17'  |
+| 3 | '15'  |
+| 4 | '13'  |

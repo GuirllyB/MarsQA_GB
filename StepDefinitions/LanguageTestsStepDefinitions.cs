@@ -68,15 +68,15 @@ namespace MarsQA_GB.StepDefinitions
         }
 
         [When(@"user deletes an existing language record '([^']*)'")]
-        public void WhenUserDeletesAnExistingLanguageRecord(string newLanguage)
+        public void WhenUserDeletesAnExistingLanguageRecord(string index)
         {
-            languagesPageObj.DeleteNewlyAddedLanguage(webDriver, newLanguage);
+            languagesPageObj.DeleteNewlyAddedLanguage(webDriver, index);
         }
 
         [Then(@"verify language record is deleted '([^']*)'")]
-        public void ThenVerifyLanguageRecordIsDeleted(string newLanguage)
+        public void ThenVerifyLanguageRecordIsDeleted(string index)
         {
-            languagesPageObj.VerifyDeletedLanguageRecord(webDriver, newLanguage);
+            languagesPageObj.VerifyDeletedLanguageRecord(webDriver, index);
         }
 
 
