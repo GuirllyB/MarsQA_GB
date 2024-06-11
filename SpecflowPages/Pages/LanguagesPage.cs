@@ -124,8 +124,6 @@ namespace MarsQA_GB.SpecflowPages.Pages
             //IWebElement cancelUpdateButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/span[1]/input[2]"));
             //cancelUpdateButton.Click();
 
-            //User sees this message on upper right upon adding: ""'{Language}' has been added to your languages"" in blue"
-
             Thread.Sleep(2000);
                        
         }
@@ -147,15 +145,6 @@ namespace MarsQA_GB.SpecflowPages.Pages
         {
             Thread.Sleep(2000);
 
-            //int deleteButtonIndex = Int32.Parse(index) * 2 + 11;
-
-            //Click X icon to delete language
-            //WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//span)[" + deleteButtonIndex + "]", 3);
-            //IWebElement deleteExButton = webDriver.FindElement(By.XPath("(//span)[" + deleteButtonIndex + "]"));
-            //deleteExButton.Click();
-
-            //IWebElement recordToBeDeleted = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]"));
-
             //Delete latest added language options 19 to 13
             WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//span)["+ index +"]", 3);
             IWebElement deleteLanguageButton = webDriver.FindElement(By.XPath("(//span)[" + index + "]"));
@@ -172,12 +161,9 @@ namespace MarsQA_GB.SpecflowPages.Pages
         public void VerifyDeletedLanguageRecord(IWebDriver webDriver, string index) 
         {
             Thread.Sleep(2000);
-            //User sees this message on upper right upon adding: "'{Language}' has been deleted from your languages" in blue
-            //Check if new language record has been deleted succe/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[1]sfully
-            //WaitUtils.WaitToBeVisible(webDriver, "XPath", "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[4]/tr/td[1]", 3);
-            //IWebElement deletedLanguage = webDriver.FindElements(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody[4]/tr/td[1]"));
-            //IWebElement deleteLanguageButton = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[4]"));
-
+            
+            //Check if new language record has been deleted succesfully
+            
             int deletedRowIndex = (Int32.Parse(index) - 11) / 2;
 
             Assert.That(!webDriver.FindElements(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody["+ index +"]")).Any(), "Language record hasn't been deleted.");
