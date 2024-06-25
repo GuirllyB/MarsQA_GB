@@ -26,6 +26,24 @@ namespace MarsQA_GB.SpecflowPages.Pages
 
         }
 
+        public void NavigateToSkillsPage(IWebDriver webDriver)
+        {
+            try
+            {
+                //Navigate to Skills page
+                IWebElement skillsTab = webDriver.FindElement(By.XPath("//a[normalize-space()='Skills']"));
+                skillsTab.Click();
+                WebDriverWait webDriverWait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(5));
+                webDriverWait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[1]/a[2]")));
+
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Mars portal page did not display" + ex.Message);
+            }
+
+        }
+
 
         public void VerifyLoggedInUser(IWebDriver webDriver)
         {

@@ -30,12 +30,12 @@ namespace MarsQA_GB.SpecflowPages.Pages
             Thread.Sleep(2000);
 
 
-            WaitUtils.WaitToBeClickable(webDriver, "CssSelector", "select[class='ui fluid dropdown']", 3);
-            IWebElement skillLevelDropdown = webDriver.FindElement(By.CssSelector("select[class='ui fluid dropdown']"));
+            WaitUtils.WaitToBeClickable(webDriver, "XPath", "//select[@class='ui fluid dropdown']", 3);
+            IWebElement skillLevelDropdown = webDriver.FindElement(By.XPath("(//select[@class='ui fluid dropdown']"));
             skillLevelDropdown.Click();
 
             //dropdown menus
-            int skillIndex = webDriver.FindElements(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/select[1]/option")).Count();
+            int skillIndex = webDriver.FindElements(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/select[1]")).Count();
             for (int i = 1; i <= skillIndex; i++)
             {
                 IWebElement skillLevelValue = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/select[1]/option[" + i + "]"));
