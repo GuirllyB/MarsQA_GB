@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace MarsQA_GB.SpecflowPages.Pages
 {
@@ -30,19 +31,19 @@ namespace MarsQA_GB.SpecflowPages.Pages
             Thread.Sleep(2000);
 
 
-            WaitUtils.WaitToBeClickable(webDriver, "XPath", "//select[@class='ui fluid dropdown']", 3);
-            IWebElement skillLevelDropdown = webDriver.FindElement(By.XPath("(//select[@class='ui fluid dropdown']"));
+            WaitUtils.WaitToBeClickable(webDriver, "XPath", "//select[@name='level']", 3);
+            IWebElement skillLevelDropdown = webDriver.FindElement(By.XPath("//select[@name='level']"));
             skillLevelDropdown.Click();
 
             //dropdown menus
-            int skillIndex = webDriver.FindElements(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/select[1]")).Count();
+            int skillIndex = webDriver.FindElements(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/div[2]/select/option")).Count();
             for (int i = 1; i <= skillIndex; i++)
             {
-                IWebElement skillLevelValue = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/select[1]/option[" + i + "]"));
+                IWebElement skillLevelValue = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/div[2]/select/option[" + i + "]"));
                 if (skillLevelValue.Text == skillLevel)
                 {
                     Console.WriteLine("Record was found");
-                    webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/select[1]/option[" + i + "]")).Click();
+                    webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/div[2]/select/option[" + i + "]")).Click();
                     break;
                 }
 
@@ -50,8 +51,8 @@ namespace MarsQA_GB.SpecflowPages.Pages
             }
 
             //Click Add button
-            WaitUtils.WaitToBeClickable(webDriver, "XPath", "(//input[@value='Add'])[2]", 3);
-            IWebElement addSkillButton = webDriver.FindElement(By.XPath("(//input[@value='Add'])[2]"));
+            WaitUtils.WaitToBeClickable(webDriver, "XPath", "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/span/input[1]", 3);
+            IWebElement addSkillButton = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/span/input[1]"));
             addSkillButton.Click();
 
             Thread.Sleep(2000);
@@ -63,8 +64,8 @@ namespace MarsQA_GB.SpecflowPages.Pages
             Thread.Sleep(2000);
             //User sees this message on upper right upon adding: "'{Skill}' has been added to your skills"
             //Check if new skill record has bene created successfully
-            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]", 3);
-            IWebElement latestAddedSkill = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]"));
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody[" + index + "]/tr/td[1]", 3);
+            IWebElement latestAddedSkill = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody[" + index + "]/tr/td[1]"));
 
             Assert.That(latestAddedSkill.Text == skill, "Skill record hasn't been created.");
             Thread.Sleep(2000);
@@ -125,8 +126,8 @@ namespace MarsQA_GB.SpecflowPages.Pages
             Thread.Sleep(2000);
             //User sees this message on upper right upon adding: ""'{Skill}' has been added to your skills"" in blue"
             //Check if latest skill record has been edited successfully
-            WaitUtils.WaitToBeVisible(webDriver, "XPath", "/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]", 3);
-            IWebElement latestEditedSkill = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]"));
+            WaitUtils.WaitToBeVisible(webDriver, "XPath", "//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody[" + index + "]/tr/td[1]", 3);
+            IWebElement latestEditedSkill = webDriver.FindElement(By.XPath("//*[@id=\"account-profile-section\"]/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody[" + index + "]/tr/td[1]"));
 
             Assert.That(latestEditedSkill.Text == newSkill, "Skill record hasn't been edited.");
             Thread.Sleep(2000);
@@ -158,6 +159,11 @@ namespace MarsQA_GB.SpecflowPages.Pages
             int deletedSkillRowIndex = (Int32.Parse(index) - 11) / 2;
 
             Assert.That(!webDriver.FindElements(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]")).Any(), "Skill record hasn't been deleted.");
+            Thread.Sleep(2000);
+
+            //User clicks Skills tab to confirm if deleted
+            IWebElement skillsTab = webDriver.FindElement(By.XPath("//a[normalize-space()='Skills']"));
+            skillsTab.Click();
             Thread.Sleep(2000);
         }
 
