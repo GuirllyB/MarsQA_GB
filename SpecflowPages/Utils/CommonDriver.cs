@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OpenQA.Selenium;
 
 namespace MarsQA_GB.SpecflowPages.Utils
 {
-    internal class CommonDriver
+    public class CommonDriver
     {
+        public IWebDriver webDriver;
     }
 }
