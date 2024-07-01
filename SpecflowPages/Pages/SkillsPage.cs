@@ -89,11 +89,11 @@ namespace MarsQA_GB.SpecflowPages.Pages
             editSkillTextbox.Clear();
             editSkillTextbox.SendKeys(newSkill);
 
-            //Edit language level from Choose Language Level dropdown list
+            //Edit language level from Choose Skill Level dropdown list
             IWebElement editSkillLevelDropdown = webDriver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/div[2]/select[1]"));
             editSkillLevelDropdown.Click();
 
-            //Choose new language level from the dropdown list
+            //Choose new skill level from the dropdown list
             int newSkillLevelValue = webDriver.FindElements(By.XPath("/html[1]/body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[" + index + "]/tr[1]/td[1]/div[1]/div[2]/select[1]/option")).Count();
             for (int i = 1; i <= newSkillLevelValue; i++)
             {
